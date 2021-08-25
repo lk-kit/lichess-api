@@ -8,11 +8,11 @@ class Engine(Stockfish):
 
 
 if __name__ == "__main__":
-    engine = Engine("Stockfish\\Stockfish_12.exe")
+    engine = Engine("Stockfish\\Stockfish_14.exe")
 
     while True:
         try:
             exec(input(">>> "))
 
         except Exception as e:
-            print(f"Es ist ein Fehler aufgetreten: {e}")
+            print(f"[Error]: {e}")
