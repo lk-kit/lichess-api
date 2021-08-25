@@ -2,7 +2,7 @@ from stockfish import Stockfish
 
 
 class Engine(Stockfish):
-    def __init__(self, path, depth=10):
+    def __init__(self, path, depth=15):
         Stockfish.__init__(self, path)
 
         self.set_depth(depth)
@@ -23,11 +23,32 @@ class Engine(Stockfish):
 if __name__ == "__main__":
     engine = Engine("Stockfish\\Stockfish_14.exe")
 
+    COMMANDS = {"get worst": lambda: print(engine.get_worst_moves()),
+                "visual": lambda: print(engine.get_board_visual()),
+                "position startpos": engine.set_position,
+                "get best": lambda: print(engine.get_best_move()),
+                "fen": lambda: print(engine.get_fen_position())}
+
+    SETTER = {"depth": lambda depth: engine.set_depth(int(depth)),
+              "fen": lambda fen: engine.set_fen_position(fen), }
+
     while True:
         try:
             command = input(">>> ")
 
-            exec(input(">>> "))
+            if command.split()[0] == "set":
+                if command.split(" ")[1].split(":")[0] in SETTER:
+                    SETTER[command.split()[1].split(":")[0]](command.split(":")[1])
+                    print("Value:", command.split(":")[1])
+
+                else:
+                    print("[Error]: This setter does not exist")
+
+            elif command in COMMANDS:
+                COMMANDS[command]()
+
+            else:
+                exec(command)
 
         except Exception as e:
             print(f"[Error]: {e}")
