@@ -10,7 +10,7 @@ PERCENTAGE = "\033[93m"
 PURPLE = "\033[95m"
 
 first = 12
-second = 20
+second = 18
 time_first = [0, 0]
 time_second = [0, 0]
 
@@ -92,12 +92,17 @@ class GameLoader:
         print("==========================================================================\n")
         print(f"Hits: {PERCENTAGE}{counter}{ENDLINE}")
         print(f"Games searched: {PERCENTAGE}{end - start}{ENDLINE}")
+
         try:
             print(f"Average time on first search: {PERCENTAGE}{time_first[0] / time_first[1]}{ENDLINE} seconds")
-            print(f"Average time on second search: {PERCENTAGE}{time_first[0] / time_first[1]}{ENDLINE} seconds")
 
         except ZeroDivisionError:
             print(f"Average time on first search: {PERCENTAGE}{0}{ENDLINE} seconds")
+
+        try:
+            print(f"Average time on second search: {PERCENTAGE}{time_second[0] / time_second[1]}{ENDLINE} seconds")
+
+        except ZeroDivisionError:
             print(f"Average time on second search: {PERCENTAGE}{0}{ENDLINE} seconds")
 
     def __init__(self, user):
@@ -114,4 +119,4 @@ print("Connecting to Stockfish: \t", end="")
 engine = Engine()
 print(PERCENTAGE + "100%" + ENDLINE)
 loader = GameLoader("drnykterstein")
-loader.search_games(0, 1)
+loader.search_games(0, 10)
