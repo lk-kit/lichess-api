@@ -16,8 +16,13 @@ time_second = [0, 0]
 
 
 class GameLoader:
-    def get_next_game(self):
+    def get_next_game(self, count):
         global time_first, time_second
+
+        self.games = lichess.api.user_games(self.user, max=self.games_played, format=PGN)
+
+        for _ in range(count):
+            next(self.games)
 
         counter = 0
         pgn = next(self.games)
@@ -85,7 +90,7 @@ class GameLoader:
             print("\n\n==========================================================================")
             print(f"Searching in Game #{i + 1}\t\t (Timestamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')})")
             print("==========================================================================\n\n")
-            counter += self.get_next_game()
+            counter += self.get_next_game(i)
 
         print("\n\n\n==========================================================================")
         print(f"Finished\t\t (Timestamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')})")
@@ -119,4 +124,4 @@ print("Connecting to Stockfish: \t", end="")
 engine = Engine()
 print(PERCENTAGE + "100%" + ENDLINE)
 loader = GameLoader("drnykterstein")
-loader.search_games(0, 10)
+loader.search_games(4, 10)
