@@ -50,4 +50,4 @@ class GameLoader:
 
 engine = Engine()
 loader = GameLoader("drnykterstein")
-loader.search_games(0, 10)
+loader.search_games(0, 9)
