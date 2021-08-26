@@ -28,7 +28,7 @@ class GameLoader:
             list_fen.append(board.fen())
 
         for move in range(len(list_fen)):
-            print(f"[Move {move}]: ", end="")
+            print(f"[Move {move + 1}]: ", end="")
             engine.set_fen_position(list_fen[move])
             engine.set_depth(15)
             worst_moves = engine.get_worst_moves()
@@ -73,6 +73,8 @@ class GameLoader:
             print()
             counter += self.get_next_game()
 
+        print()
+        print()
         print(f"(Timestamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')})")
         print(f"\nFinished with {PERCENTAGE}{counter}{ENDLINE} hits")
 
