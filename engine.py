@@ -19,8 +19,9 @@ class Engine(Stockfish):
         else:
             return {"status": 1, "worst": top_moves[-1], "second-worst": top_moves[-2]}
 
-    def get_worst_difference(self) -> dict:
-        worst_moves = self.get_worst_moves()
+    def get_worst_difference(self, worst_moves=None) -> dict:
+        if worst_moves is None:
+            worst_moves = self.get_worst_moves()
 
         if worst_moves["status"] == 1:
             if worst_moves["worst"]["Mate"] is None:
@@ -37,8 +38,8 @@ class Engine(Stockfish):
         else:
             return {"status": -1, "cp": None, "mate": None}
 
-    def get_difference_significant(self) -> bool:
-        worst_difference = self.get_worst_difference()
+    def get_difference_significant(self, worst_moves=None) -> bool:
+        worst_difference = self.get_worst_difference(worst_moves)
 
         if worst_difference["status"] == -1:
             return False
