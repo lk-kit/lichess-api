@@ -8,6 +8,9 @@ ENDLINE = "\033[0m"
 PERCENTAGE = "\033[93m"
 PURPLE = "\033[95m"
 
+first = 12
+second = 20
+
 
 class GameLoader:
     def get_next_game(self):
@@ -28,27 +31,27 @@ class GameLoader:
             list_fen.append(board.fen())
 
         for move in range(len(list_fen)):
-            print(f"[Move {move + 1}]: ", end="")
+            print(f"[Move {move + 1}/{len(list_fen)}]: ", end="")
             engine.set_fen_position(list_fen[move])
-            engine.set_depth(15)
+            engine.set_depth(first)
             worst_moves = engine.get_worst_moves()
             significant = engine.get_difference_significant(worst_moves)
 
             if not significant:
-                print("Unsuccessful (Depth: 15)")
+                print(f"Unsuccessful (Depth: {first})")
 
             else:
-                print(f"{PURPLE}Successful{ENDLINE} (Depth: 15) \t", end="")
-                engine.set_depth(20)
+                print(f"{PURPLE}Successful{ENDLINE} (Depth: {first}) \t", end="")
+                engine.set_depth(second)
                 engine.set_fen_position(list_fen[move])
                 worst_moves = engine.get_worst_moves()
                 significant = engine.get_difference_significant(worst_moves)
 
                 if not significant:
-                    print("Unsuccessful (Depth: 20)")
+                    print(f"Unsuccessful (Depth: {second})")
 
                 else:
-                    print(f"{PURPLE}Successful{ENDLINE} (Depth: 20)")
+                    print(f"{PURPLE}Successful{ENDLINE} (Depth: {second})")
                     counter += 1
 
                     with open("result.txt") as file:
@@ -75,8 +78,8 @@ class GameLoader:
 
         print()
         print()
-        print(f"(Timestamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')})")
-        print(f"\nFinished with {PERCENTAGE}{counter}{ENDLINE} hits")
+        print(
+            f"Finished with {PERCENTAGE}{counter}{ENDLINE} hits in {PERCENTAGE}{end - start}{ENDLINE} games\t\t (Timestamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')})")
 
     def __init__(self, user):
         self.user = user
