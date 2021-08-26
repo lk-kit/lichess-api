@@ -73,6 +73,7 @@ class GameLoader:
             print()
             counter += self.get_next_game()
 
+        print(f"(Timestamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')})")
         print(f"\nFinished with {PERCENTAGE}{counter}{ENDLINE} hits")
 
     def __init__(self, user):
