@@ -44,7 +44,6 @@ class GameLoader:
             worst_moves = engine.get_worst_moves()
             time_first[0] += time() - begin
             time_first[1] += 1
-            print(time_first)
 
             significant = engine.get_difference_significant(worst_moves)
 
@@ -60,7 +59,6 @@ class GameLoader:
                 worst_moves = engine.get_worst_moves()
                 time_second[0] += time() - begin
                 time_second[1] += 1
-                print(time_second)
 
                 significant = engine.get_difference_significant(worst_moves)
 
