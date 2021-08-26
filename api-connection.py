@@ -3,6 +3,7 @@ from engine import *
 from datetime import datetime
 import chess.pgn
 import lichess.api
+from time import time
 
 ENDLINE = "\033[0m"
 PERCENTAGE = "\033[93m"
@@ -10,10 +11,14 @@ PURPLE = "\033[95m"
 
 first = 12
 second = 20
+time_first = [0, 0]
+time_second = [0, 0]
 
 
 class GameLoader:
     def get_next_game(self):
+        global time_first, time_second
+
         counter = 0
         pgn = next(self.games)
 
@@ -34,7 +39,13 @@ class GameLoader:
             print(f"[Move {move + 1}/{len(list_fen)}]: ", end="")
             engine.set_fen_position(list_fen[move])
             engine.set_depth(first)
+
+            begin = time()
             worst_moves = engine.get_worst_moves()
+            time_first[0] += time() - begin
+            time_first[1] += 1
+            print(time_first)
+
             significant = engine.get_difference_significant(worst_moves)
 
             if not significant:
@@ -44,7 +55,13 @@ class GameLoader:
                 print(f"{PURPLE}Successful{ENDLINE} (Depth: {first}) \t", end="")
                 engine.set_depth(second)
                 engine.set_fen_position(list_fen[move])
+
+                begin = time()
                 worst_moves = engine.get_worst_moves()
+                time_second[0] += time() - begin
+                time_second[1] += 1
+                print(time_second)
+
                 significant = engine.get_difference_significant(worst_moves)
 
                 if not significant:
@@ -67,19 +84,23 @@ class GameLoader:
         counter = 0
 
         for i in range(start, end):
-            print()
-            print()
-            print("==========================================================================")
+            print("\n\n==========================================================================")
             print(f"Searching in Game #{i + 1}\t\t (Timestamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')})")
-            print("==========================================================================")
-            print()
-            print()
+            print("==========================================================================\n\n")
             counter += self.get_next_game()
 
-        print()
-        print()
-        print(
-            f"Finished with {PERCENTAGE}{counter}{ENDLINE} hits in {PERCENTAGE}{end - start}{ENDLINE} games\t\t (Timestamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')})")
+        print("\n\n\n==========================================================================")
+        print(f"Finished\t\t (Timestamp: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')})")
+        print("==========================================================================\n")
+        print(f"Hits: {PERCENTAGE}{counter}{ENDLINE}")
+        print(f"Games searched: {PERCENTAGE}{end - start}{ENDLINE}")
+        try:
+            print(f"Average time on first search: {PERCENTAGE}{time_first[0] / time_first[1]}{ENDLINE} seconds")
+            print(f"Average time on second search: {PERCENTAGE}{time_first[0] / time_first[1]}{ENDLINE} seconds")
+
+        except ZeroDivisionError:
+            print(f"Average time on first search: {PERCENTAGE}{0}{ENDLINE} seconds")
+            print(f"Average time on second search: {PERCENTAGE}{0}{ENDLINE} seconds")
 
     def __init__(self, user):
         self.user = user
