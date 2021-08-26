@@ -25,7 +25,8 @@ class Engine(Stockfish):
 
         if worst_moves["status"] == 1:
             if worst_moves["worst"]["Mate"] is None:
-                return {"status": 1, "cp": worst_moves["second-worst"]["Centipawn"] - worst_moves["worst"]["Centipawn"],
+                assert worst_moves["second-worst"]["Mate"] is None
+                return {"status": 1, "cp": abs(worst_moves["second-worst"]["Centipawn"] - worst_moves["worst"]["Centipawn"]),
                         "mate": None}
 
             else:
@@ -80,7 +81,13 @@ if __name__ == "__main__":
                 COMMANDS[command]()
 
             else:
-                exec(command)
+                try:
+                    res = eval(command)
+                    if res is not None:
+                        print(f"\033[93m{res}\033[0m")
+
+                except SyntaxError:
+                    exec(command)
 
         except Exception as e:
             print(f"[Error]: {e}")
