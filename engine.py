@@ -2,7 +2,7 @@ from stockfish import Stockfish
 
 
 class Engine(Stockfish):
-    def __init__(self, path, depth=15):
+    def __init__(self, path="Stockfish\\Stockfish_14.exe", depth=15):
         Stockfish.__init__(self, path)
 
         self.set_depth(depth)
