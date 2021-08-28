@@ -1,5 +1,6 @@
 from stockfish import Stockfish
 
+
 class Engine(Stockfish):
     def __init__(self, path="Stockfish\\Stockfish_14.exe", depth=15):
         Stockfish.__init__(self, path)
@@ -25,7 +26,8 @@ class Engine(Stockfish):
         if worst_moves["status"] == 1:
             if worst_moves["worst"]["Mate"] is None:
                 assert worst_moves["second-worst"]["Mate"] is None
-                return {"status": 1, "cp": abs(worst_moves["second-worst"]["Centipawn"] - worst_moves["worst"]["Centipawn"]),
+                return {"status": 1,
+                        "cp": abs(worst_moves["second-worst"]["Centipawn"] - worst_moves["worst"]["Centipawn"]),
                         "mate": None}
 
             else:
